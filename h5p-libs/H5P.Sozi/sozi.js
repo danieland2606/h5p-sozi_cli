@@ -96,7 +96,6 @@ H5P.Sozi = (function ($) {
 
         function displayFrame(name, cx, cy, opacity, width, height) {
             const layer = document.getElementById(name);
-            console.log(layer);
             //layer.setAttribute("x", cx);
             //layer.setAttribute("y", cy);
 
