@@ -1,0 +1,7 @@
+{
+  "host": "localhost",
+  "port": 8080,
+  "libraryDir": "h5p-libs",
+  "mainLibraryDir": "H5P.Sozi",
+  "contentDir": "h5p-content/sozi"
+}

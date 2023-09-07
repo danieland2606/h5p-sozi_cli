@@ -1,0 +1,9 @@
+[
+  {
+    "label": "Json file",
+    "name": "json",
+    "type": "file",
+    "optional": false,
+    "description": "Json-Datei, welche aus der SVG-Datei eine Sozi Präsentation erstellt."
+  }
+]

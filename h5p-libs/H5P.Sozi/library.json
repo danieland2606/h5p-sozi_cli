@@ -1,0 +1,21 @@
+{
+  "title": "Sozi",
+  "description": "Erstellung einer Sozi Präsentation aus einer SVG-Datei mithilfe eine JSON-Datei von Sozi",
+  "majorVersion": 1,
+  "minorVersion": 0,
+  "patchVersion": 94,
+  "runnable": 1,
+  "author": "Daniel Arnold",
+  "license": "cc-by-sa",
+  "machineName": "H5P.Sozi",
+  "coreApi": {
+    "majorVersion": 1,
+    "minorVersion": 0
+  },
+  "preloadedJs": [
+    { "path": "sozi.js" }
+  ],
+  "preloadedCss": [
+    { "path": "sozi.css" }
+  ]
+}
