@@ -1,3 +1,15 @@
-.svg-data {
-    content: url('Desktop/Bachlorarbeit/cli/h5p-libs/h5p-sozi/projektarbeiten.svg');
+
+.buttonDivClass {
+    width: 300px;
+    float:left;
+
 }
+.buttonClass{
+    width: 150px;
+}
+.frameClass {
+    margin: auto;
+    float:left;
+    margin-left: 25px;
+}
+
