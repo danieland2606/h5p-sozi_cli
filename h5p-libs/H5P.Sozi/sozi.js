@@ -78,6 +78,7 @@ H5P.Sozi = (function ($) {
 
         window.onload = async function () {
 
+
             const div = document.getElementById("content");
             const file = await fetch(svg_path);
             const text = await file.text();
@@ -85,6 +86,9 @@ H5P.Sozi = (function ($) {
             const svg = document.querySelector("svg");
             svg_width = parseInt(svg.getAttribute("width"),10);
             svg_height = parseInt(svg.getAttribute("height"),10);
+
+
+
 
 
             const json = await fetch(json_path);
@@ -97,6 +101,7 @@ H5P.Sozi = (function ($) {
         }
 
         function nextFrame() {
+
             if(frameNr == json_data.frames.length-1) {
                 dataForFrame();
             } else {
@@ -116,37 +121,54 @@ H5P.Sozi = (function ($) {
             frameDiv.innerHTML=framePostion();
         }
 
-        function dataForFrame() {
+        function dataForFrame() {;
+            let name;
+            let cx;
+            let cy;
+            let opacity;
+            let width;
+            let height;
+            let angle;
+            let deltaX;
+            let deltaY;
+
             const frames = json_data.frames[frameNr];
             Object.keys(frames.cameraStates).forEach((layer) => {
                 if (layer !== "__sozi_auto__") {
-                    const name = layer;
-                    const cx = frames.cameraStates[layer].cx;
-                    const cy = frames.cameraStates[layer].cy;
-                    const opacity = frames.cameraStates[layer].opacity;
-                    const width = frames.cameraStates[layer].width;
-                    const height = frames.cameraStates[layer].height;
-                    const angle = frames.cameraStates[layer].angle;
-                    displayFrame(name, cx, cy, opacity, width, height, angle);
+                    name = layer;
+                    cx = frames.cameraStates[layer].cx;
+                    cy = frames.cameraStates[layer].cy;
+                    opacity = frames.cameraStates[layer].opacity;
+                    width = frames.cameraStates[layer].width;
+                    height = frames.cameraStates[layer].height;
+                    angle = frames.cameraStates[layer].angle;
+                    Object.keys(frames.cameraOffsets).forEach((layer) => {
+                        if(layer == name) {
+                            deltaX = frames.cameraOffsets[layer].deltaX;
+                            deltaY = frames.cameraOffsets[layer].deltaY;
+                        }
+                    })
+                    displayFrame(name, cx, cy, opacity, width, height, angle, deltaX, deltaY);
+
                 }
             })
         }
 
-        function displayFrame(name, cx, cy, opacity, widthLayer, heightLayer, angle) {
-            const layer = document.getElementById(name);
+        function displayFrame(name, cx, cy, opacity, widthLayer, heightLayer, angle, deltaX, deltaY) {
+
             const scale = Math.min(svg_width / widthLayer, svg_height / heightLayer);
-            const width = svg_width/scale/2;
-            const height = svg_height/scale/2;
+            const width = svg_width / scale / 2;
+            const height = svg_height / scale / 2;
             const x = width - cx;
             const y = height - cy;
 
-            layer.setAttribute('transform','scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy +')');
-            if(opacity === 1) {
-                layer.style.opacity = 1;
-            } else {
-                layer.style.opacity = 0;
+            const layer = document.getElementById(name);
+            layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
+            if (name == "layer1" || name == "layer22") {
+                console.log('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
             }
-            //layer.style.display = (opacity == 1) ? "initial" : "none";
+            layer.style.opacity = (opacity === 1) ? "1" : opacity;
+
         }
         function framePostion() {
             let currentFrame= frameNr +1;
