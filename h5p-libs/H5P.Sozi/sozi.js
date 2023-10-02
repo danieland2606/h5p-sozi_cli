@@ -2,7 +2,7 @@ var H5P = H5P || {};
 
 H5P.Sozi = (function ($) {
     /**
-     * Constructor function.
+     * Konstruktor
      */
     function C(options, id) {
         // Extend defaults with provided options
@@ -32,29 +32,53 @@ H5P.Sozi = (function ($) {
      */
 
     /**
-     * Attach function called by H5P framework to insert H5P content into
-     * page
+     * Atach Funktion welche von dem H5P Framework aufgerufen wird um die H5P-Inhalte in die Seite zu laden.
      *
      * @param {jQuery} $container
      */
     C.prototype.attach = function ($container) {
-
+        /**
+         * Erhalten von dem Pfad zu der JSON-Datei.
+         */
         const json_path = H5P.getPath(this.options.json.path, this.id);
-        let frameNr= 0;
         let json_data;
 
+        /**
+         * Aktuelle Frame Nummer welche angezeigt wird.
+         */
+        let frameNr= 0;
 
+
+        /**
+         * Erhalten von dem Pfad zu der SVG-Datei.
+         */
         const svg_path = H5P.getLibraryPath("H5P.Sozi-1.0") + "/projektarbeiten.svg";
         //const svg_path = H5P.getLibraryPath("H5P.Sozi-1.0") + "/tutorial-layers.svg";
+
+        /**
+         * Breite und Höhe der SVG-Datei.
+         */
         let svg_width;
         let svg_height;
+        let svg_bool = false;
 
+        let text;
+
+        /**
+         * Erstellung von einem Div, welcher die SVG-Datei beinhaltet.
+         */
         let div = document.createElement("div");
         div.id = "content";
 
+        /**
+         * Erstellung von einem ButtonDiv, welcher die Buttons enthält.
+         */
         let buttondiv = document.createElement("div");
         buttondiv.className = "buttonDivClass";
 
+        /**
+         * Erstellung von einem Button der zum vorherigen Frame springt.
+         */
         let backbtn = document.createElement("button");
         backbtn.className = "buttonClass";
         backbtn.innerHTML= "Previous Frame";
@@ -62,6 +86,9 @@ H5P.Sozi = (function ($) {
             prevFrame();
         });
 
+        /**
+         * Erstellung von einem Button der zum nächsten Frame springt.
+         */
         let nextbtn = document.createElement("button");
         nextbtn.innerHTML= "Next Frame";
         nextbtn.className = "buttonClass";
@@ -69,26 +96,24 @@ H5P.Sozi = (function ($) {
             nextFrame();
         });
 
+        /**
+         * Das Anhängen von den Buttons zu der ButtonDiv.
+         */
         buttondiv.append(backbtn);
         buttondiv.append(nextbtn);
 
+        /**
+         * Erstellung von einem FrameDiv um die aktuelle Frame Nummer anzuzegien.
+         */
         let frameDiv = document.createElement("div");
         frameDiv.className = "frameClass";
-
-
+        /**
+         * Asynchone Funktion zum Laden der SVG-Datei, sowie die Höhe und Breite der SVG-Datei. Zudem das Laden der
+         * JSON-Datei, sowie das Aufrufen der Funktionen dataforFrame() und framePostion,
+         */
         window.onload = async function () {
-
-
-            const div = document.getElementById("content");
             const file = await fetch(svg_path);
-            const text = await file.text();
-            div.innerHTML = text;
-            const svg = document.querySelector("svg");
-            svg_width = parseInt(svg.getAttribute("width"),10);
-            svg_height = parseInt(svg.getAttribute("height"),10);
-
-
-
+            text = await file.text();
 
 
             const json = await fetch(json_path);
@@ -100,8 +125,11 @@ H5P.Sozi = (function ($) {
             frameDiv.innerHTML=framePostion();
         }
 
+        /**
+         * Dieses Methode wird aufgerufen wenn der nächste Frame angezeigt werden soll, hierbei wird frameNr
+         * inkrementiert, sowie die Daten des nächsten Frames ausgelesen.
+         */
         function nextFrame() {
-
             if(frameNr == json_data.frames.length-1) {
                 dataForFrame();
             } else {
@@ -111,6 +139,10 @@ H5P.Sozi = (function ($) {
             frameDiv.innerHTML=framePostion();
         }
 
+        /**
+         * Dieses Methode wird aufgerufen wenn der vorherige Frame angezeigt werden soll, hierbei wird frameNr
+         * dekrementiert, sowie die Daten des vorherigen Frames ausgelesen.
+         */
         function prevFrame() {
             if(frameNr == 0) {
                 dataForFrame();
@@ -121,40 +153,46 @@ H5P.Sozi = (function ($) {
             frameDiv.innerHTML=framePostion();
         }
 
-        function dataForFrame() {;
-            let name;
-            let cx;
-            let cy;
-            let opacity;
-            let width;
-            let height;
-            let angle;
-            let deltaX;
-            let deltaY;
+        /**
+         * Diese Methode wird aufgerufen um die Daten des aktuellen Frames aus der JSON-Datei auszulesen und das Div-Element mit der SVG-Datei zu befüllen.
+         */
+        function dataForFrame() {
+            div.innerHTML = text;
+
+            if(svg_bool==false) {
+                const svg = document.querySelector("svg");
+                svg_width = parseInt(svg.getAttribute("width"), 10);
+                svg_height = parseInt(svg.getAttribute("height"), 10);
+                svg_bool= true;
+            }
 
             const frames = json_data.frames[frameNr];
             Object.keys(frames.cameraStates).forEach((layer) => {
                 if (layer !== "__sozi_auto__") {
-                    name = layer;
-                    cx = frames.cameraStates[layer].cx;
-                    cy = frames.cameraStates[layer].cy;
-                    opacity = frames.cameraStates[layer].opacity;
-                    width = frames.cameraStates[layer].width;
-                    height = frames.cameraStates[layer].height;
-                    angle = frames.cameraStates[layer].angle;
-                    Object.keys(frames.cameraOffsets).forEach((layer) => {
-                        if(layer == name) {
-                            deltaX = frames.cameraOffsets[layer].deltaX;
-                            deltaY = frames.cameraOffsets[layer].deltaY;
-                        }
-                    })
-                    displayFrame(name, cx, cy, opacity, width, height, angle, deltaX, deltaY);
-
+                    const name = layer;
+                    const cx = frames.cameraStates[layer].cx;
+                    const cy = frames.cameraStates[layer].cy;
+                    const opacity = frames.cameraStates[layer].opacity;
+                    const width = frames.cameraStates[layer].width;
+                    const height = frames.cameraStates[layer].height;
+                    const angle = frames.cameraStates[layer].angle;
+                    displayFrame(name, cx, cy, opacity, width, height, angle);
                 }
             })
         }
 
-        function displayFrame(name, cx, cy, opacity, widthLayer, heightLayer, angle, deltaX, deltaY) {
+        /**
+         * Diese Methode wird aufgerufen um SVG-Datei in die richtige Position des Frames zu tranformieren.
+         *
+         * @param {string} name - Name des aktuellen Layers
+         * @param {number} cx - Positionierung des Layer auf der X-Koordinate
+         * @param {number} cy - Positionierung des Layer auf der Y-Koordinate
+         * @param {number} opacity - Transperenz des Layers
+         * @param {number} widthLayer - Breite des Layers
+         * @param {number} heightLayer - Höhe des Layers
+         * @param {number} angle - Der Rotations-Winkel des Layers
+         */
+        function displayFrame(name, cx, cy, opacity, widthLayer, heightLayer, angle) {
 
             const scale = Math.min(svg_width / widthLayer, svg_height / heightLayer);
             const width = svg_width / scale / 2;
@@ -163,20 +201,34 @@ H5P.Sozi = (function ($) {
             const y = height - cy;
 
             const layer = document.getElementById(name);
-            layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
-            if (name == "layer1" || name == "layer22") {
-                console.log('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
+            const transform = layer.getAttribute("transform");
+            if (transform != null) {
+                const transfromArr = transform
+                    .match(/-?[\d.]+/g)
+                    .map(parseFloat);
+                const x1= transfromArr[0];
+                const y1= transfromArr[1];
+                const translateX= x+x1;
+                const translateY= y+y1;
+                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + translateX + ',' + translateY + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
+            }else{
+                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
             }
-            layer.style.opacity = (opacity === 1) ? "1" : opacity;
+
+            layer.style.opacity = (opacity === 0) ? "0" : opacity;
 
         }
+        /**
+         * Dieses Methode wird aufgerufen um den aktuellen Frame anzuzeigen.
+         */
         function framePostion() {
             let currentFrame= frameNr +1;
             return currentFrame + "/" + json_data.frames.length;
         }
 
-
-
+        /**
+         * Anhängen der jewweilien Divs an den Container.
+         */
         $container.append(div);
         $container.append(buttondiv);
         $container.append(frameDiv);
