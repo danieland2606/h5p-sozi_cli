@@ -38,8 +38,8 @@ H5P.Sozi = (function ($) {
      */
     C.prototype.attach = function ($container) {
 
-        let url;
-        window.addEventListener("hashchange", hashChange);
+        let hashFrameID;
+        window.addEventListener("hashchange", urlHashChange);
         /**
          * Erhalten von dem Pfad zu der JSON-Datei.
          */
@@ -168,11 +168,11 @@ H5P.Sozi = (function ($) {
                 svg_bool= true;
             }
 
-            if(url != null) {
+            if(hashFrameID != null) {
                 let frameFound= false;
                 frameNr= 0;
                 json_data.frames.forEach((frame) => {
-                    if(frame.frameId == url) {
+                    if(frame.frameId == hashFrameID) {
                         Object.keys(frame.cameraStates).forEach((layer) => {
                             if (layer !== "__sozi_auto__") {
                                 const name = layer;
@@ -191,7 +191,7 @@ H5P.Sozi = (function ($) {
                         frameNr++;
                     }
                 })
-                url=null;
+                hashFrameID=null;
                 frameDiv.innerHTML=framePostion();
             }else{
 
@@ -261,9 +261,11 @@ H5P.Sozi = (function ($) {
             let currentFrame= frameNr +1;
             return currentFrame + "/" + json_data.frames.length;
         }
-
-        function hashChange() {
-            url = window.location.hash.slice(1);
+        /**
+         * Dieses Methode wird aufgerufen um die URL des nächsten Frames Frame zubestimmen.
+         */
+        function urlHashChange() {
+            hashFrameID = window.location.hash.slice(1);
             dataForFrame();
         }
 
