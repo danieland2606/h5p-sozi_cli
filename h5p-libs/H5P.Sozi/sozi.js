@@ -183,9 +183,9 @@ H5P.Sozi = (function ($) {
                                 const height = frame.cameraStates[layer].height;
                                 const angle = frame.cameraStates[layer].angle;
                                 displayFrame(name, cx, cy, opacity, width, height, angle);
-                                frameFound=true;
                             }
                         })
+                        frameFound=true;
                     }
                     if(!frameFound) {
                         frameNr++;
