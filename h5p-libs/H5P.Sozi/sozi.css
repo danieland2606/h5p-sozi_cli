@@ -2,13 +2,21 @@
 .buttonDivClass {
     width: 300px;
     float:left;
-
 }
 .buttonClass{
     width: 150px;
+    font-size: 18px;
 }
 .frameClass {
     float:left;
     margin-left: 25px;
 }
-
+@font-face {
+    font-family: 'Teko';
+    font-style: normal;
+    font-weight: 400;
+    src: url(font-teko.ttf) format('truetype');
+}
+.sozi-frame-number {
+    transform: scale(0);
+}
