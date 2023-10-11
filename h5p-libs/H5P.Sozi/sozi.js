@@ -37,6 +37,9 @@ H5P.Sozi = (function ($) {
      * @param {jQuery} $container
      */
     C.prototype.attach = function ($container) {
+
+        let url;
+        window.addEventListener("hashchange", hashChange);
         /**
          * Erhalten von dem Pfad zu der JSON-Datei.
          */
@@ -47,7 +50,6 @@ H5P.Sozi = (function ($) {
          * Aktuelle Frame Nummer welche angezeigt wird.
          */
         let frameNr= 0;
-
 
         /**
          * Erhalten von dem Pfad zu der SVG-Datei.
@@ -166,19 +168,47 @@ H5P.Sozi = (function ($) {
                 svg_bool= true;
             }
 
-            const frames = json_data.frames[frameNr];
-            Object.keys(frames.cameraStates).forEach((layer) => {
-                if (layer !== "__sozi_auto__") {
-                    const name = layer;
-                    const cx = frames.cameraStates[layer].cx;
-                    const cy = frames.cameraStates[layer].cy;
-                    const opacity = frames.cameraStates[layer].opacity;
-                    const width = frames.cameraStates[layer].width;
-                    const height = frames.cameraStates[layer].height;
-                    const angle = frames.cameraStates[layer].angle;
-                    displayFrame(name, cx, cy, opacity, width, height, angle);
-                }
-            })
+            if(url != null) {
+                let frameFound= false;
+                frameNr= 0;
+                json_data.frames.forEach((frame) => {
+                    if(frame.frameId == url) {
+                        Object.keys(frame.cameraStates).forEach((layer) => {
+                            if (layer !== "__sozi_auto__") {
+                                const name = layer;
+                                const cx = frame.cameraStates[layer].cx;
+                                const cy = frame.cameraStates[layer].cy;
+                                const opacity = frame.cameraStates[layer].opacity;
+                                const width = frame.cameraStates[layer].width;
+                                const height = frame.cameraStates[layer].height;
+                                const angle = frame.cameraStates[layer].angle;
+                                displayFrame(name, cx, cy, opacity, width, height, angle);
+                                frameFound=true;
+                            }
+                        })
+                    }
+                    if(!frameFound) {
+                        frameNr++;
+                    }
+                })
+                url=null;
+                frameDiv.innerHTML=framePostion();
+            }else{
+
+                const frames = json_data.frames[frameNr];
+                Object.keys(frames.cameraStates).forEach((layer) => {
+                    if (layer !== "__sozi_auto__") {
+                        const name = layer;
+                        const cx = frames.cameraStates[layer].cx;
+                        const cy = frames.cameraStates[layer].cy;
+                        const opacity = frames.cameraStates[layer].opacity;
+                        const width = frames.cameraStates[layer].width;
+                        const height = frames.cameraStates[layer].height;
+                        const angle = frames.cameraStates[layer].angle;
+                        displayFrame(name, cx, cy, opacity, width, height, angle);
+                    }
+                })
+            }
         }
 
         /**
@@ -200,6 +230,7 @@ H5P.Sozi = (function ($) {
             const x = width - cx;
             const y = height - cy;
 
+
             const layer = document.getElementById(name);
             const transform = layer.getAttribute("transform");
             if (transform != null) {
@@ -215,7 +246,12 @@ H5P.Sozi = (function ($) {
                 layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
             }
 
-            layer.style.opacity = (opacity === 0) ? "0" : opacity;
+            layer.setAttribute("opacity", opacity);
+            if(opacity == 0) {
+                layer.style.display = opacity === 0 ? "none" : "initial";
+            }
+            //layer.style.opacity = (opacity === 0) ? "0" : opacity;
+
 
         }
         /**
@@ -226,13 +262,17 @@ H5P.Sozi = (function ($) {
             return currentFrame + "/" + json_data.frames.length;
         }
 
+        function hashChange() {
+            url = window.location.hash.slice(1);
+            dataForFrame();
+        }
+
         /**
          * Anhängen der jewweilien Divs an den Container.
          */
         $container.append(div);
         $container.append(buttondiv);
         $container.append(frameDiv);
-
     };
 
 
