@@ -55,7 +55,7 @@ H5P.Sozi = (function ($) {
          * Erhalten von dem Pfad zu der SVG-Datei.
          */
         const svg_path = H5P.getLibraryPath("H5P.Sozi-1.0") + "/projektarbeiten.svg";
-        //const svg_path = H5P.getLibraryPath("H5P.Sozi-1.0") + "/tutorial-layers.svg";
+
 
         /**
          * Breite und Höhe der SVG-Datei.
