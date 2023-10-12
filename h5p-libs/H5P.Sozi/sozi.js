@@ -173,18 +173,7 @@ H5P.Sozi = (function ($) {
                 frameNr= 0;
                 json_data.frames.forEach((frame) => {
                     if(frame.frameId == hashFrameID) {
-                        Object.keys(frame.cameraStates).forEach((layer) => {
-                            if (layer !== "__sozi_auto__") {
-                                const name = layer;
-                                const cx = frame.cameraStates[layer].cx;
-                                const cy = frame.cameraStates[layer].cy;
-                                const opacity = frame.cameraStates[layer].opacity;
-                                const width = frame.cameraStates[layer].width;
-                                const height = frame.cameraStates[layer].height;
-                                const angle = frame.cameraStates[layer].angle;
-                                displayFrame(name, cx, cy, opacity, width, height, angle);
-                            }
-                        })
+                        getData(frame);
                         frameFound=true;
                     }
                     if(!frameFound) {
@@ -196,18 +185,8 @@ H5P.Sozi = (function ($) {
             }else{
 
                 const frames = json_data.frames[frameNr];
-                Object.keys(frames.cameraStates).forEach((layer) => {
-                    if (layer !== "__sozi_auto__") {
-                        const name = layer;
-                        const cx = frames.cameraStates[layer].cx;
-                        const cy = frames.cameraStates[layer].cy;
-                        const opacity = frames.cameraStates[layer].opacity;
-                        const width = frames.cameraStates[layer].width;
-                        const height = frames.cameraStates[layer].height;
-                        const angle = frames.cameraStates[layer].angle;
-                        displayFrame(name, cx, cy, opacity, width, height, angle);
-                    }
-                })
+                getData(frames);
+
             }
         }
 
@@ -248,9 +227,9 @@ H5P.Sozi = (function ($) {
 
             layer.setAttribute("opacity", opacity);
             if(opacity == 0) {
-                layer.style.display = opacity === 0 ? "none" : "initial";
+                layer.style.display= "none";
             }
-            //layer.style.opacity = (opacity === 0) ? "0" : opacity;
+
 
 
         }
@@ -267,6 +246,20 @@ H5P.Sozi = (function ($) {
         function urlHashChange() {
             hashFrameID = window.location.hash.slice(1);
             dataForFrame();
+        }
+        function getData(frame){
+            Object.keys(frame.cameraStates).forEach((layer) => {
+                if (layer !== "__sozi_auto__") {
+                    const name = layer;
+                    const cx = frame.cameraStates[layer].cx;
+                    const cy = frame.cameraStates[layer].cy;
+                    const opacity = frame.cameraStates[layer].opacity;
+                    const width = frame.cameraStates[layer].width;
+                    const height = frame.cameraStates[layer].height;
+                    const angle = frame.cameraStates[layer].angle;
+                    displayFrame(name, cx, cy, opacity, width, height, angle);
+                }
+            })
         }
 
         /**
