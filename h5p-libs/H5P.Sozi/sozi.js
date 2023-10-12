@@ -156,7 +156,7 @@ H5P.Sozi = (function ($) {
         }
 
         /**
-         * Diese Methode wird aufgerufen um die Daten des aktuellen Frames aus der JSON-Datei auszulesen und das Div-Element mit der SVG-Datei zu befüllen.
+         * Diese Methode wird aufgerufen um den aktuellen Frames aus der JSON-Datei zu bestimmen und das Div-Element mit der SVG-Datei zu befüllen.
          */
         function dataForFrame() {
             div.innerHTML = text;
@@ -220,9 +220,11 @@ H5P.Sozi = (function ($) {
                 const y1= transfromArr[1];
                 const translateX= x+x1;
                 const translateY= y+y1;
-                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + translateX + ',' + translateY + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
+                const rotatecx= cx-x1;
+                const rotatecy= cy-y1;
+                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + translateX + ',' + translateY + ') rotate(' + (-angle) + ',' + rotatecx + ',' + rotatecy + ')');
             }else{
-                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + -(angle) + ',' + cx + ',' + cy + ')');
+                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + (-angle) + ',' + cx + ',' + cy + ')');
             }
 
             layer.setAttribute("opacity", opacity);
@@ -247,6 +249,9 @@ H5P.Sozi = (function ($) {
             hashFrameID = window.location.hash.slice(1);
             dataForFrame();
         }
+        /**
+         * Dieses Methode wird aufgerufen um die Daten des nöchsten Frames zu  bestimmen.
+         */
         function getData(frame){
             Object.keys(frame.cameraStates).forEach((layer) => {
                 if (layer !== "__sozi_auto__") {
