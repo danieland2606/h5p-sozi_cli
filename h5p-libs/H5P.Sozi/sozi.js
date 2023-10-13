@@ -219,9 +219,9 @@ H5P.Sozi = (function ($) {
                 const y1= transfromArr[1];
                 const translateX= x+x1;
                 const translateY= y+y1;
-                const rotatecx= cx-x1;
-                const rotatecy= cy-y1;
-                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + translateX + ',' + translateY + ') rotate(' + (-angle) + ',' + rotatecx + ',' + rotatecy + ')');
+                const rotateCx= cx-x1;
+                const rotateCy= cy-y1;
+                layer.setAttribute('transform', 'scale(' + scale + ') translate(' + translateX + ',' + translateY + ') rotate(' + (-angle) + ',' + rotateCx + ',' + rotateCy + ')');
             }else{
                 layer.setAttribute('transform', 'scale(' + scale + ') translate(' + x + ',' + y + ') rotate(' + (-angle) + ',' + cx + ',' + cy + ')');
             }
