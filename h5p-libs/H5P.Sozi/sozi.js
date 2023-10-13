@@ -70,7 +70,6 @@ H5P.Sozi = (function ($) {
          * Erstellung von einem Div, welcher die SVG-Datei beinhaltet.
          */
         let div = document.createElement("div");
-        div.id = "content";
 
         /**
          * Erstellung von einem ButtonDiv, welcher die Buttons enthält.

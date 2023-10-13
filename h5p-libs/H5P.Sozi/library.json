@@ -3,7 +3,7 @@
   "description": "Erstellung einer Sozi Präsentation aus einer SVG-Datei mithilfe eine JSON-Datei von Sozi",
   "majorVersion": 1,
   "minorVersion": 0,
-  "patchVersion": 94,
+  "patchVersion": 0,
   "runnable": 1,
   "author": "Daniel Arnold",
   "license": "cc-by-sa",
