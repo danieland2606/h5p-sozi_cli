@@ -14,7 +14,7 @@ H5P.Sozi = (function ($) {
     };
 
     /**
-     * Atach Funktion welche von dem H5P Framework aufgerufen wird um die H5P-Inhalte in die Seite zu laden.
+     * Attach Funktion welche von dem H5P Framework aufgerufen wird um die H5P-Inhalte in die Seite zu laden.
      *
      * @param {jQuery} $container
      */
