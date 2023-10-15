@@ -74,8 +74,8 @@ H5P.Sozi = (function ($) {
         /**
          * Erstellung von einem ButtonDiv, welcher die Buttons enthält.
          */
-        let buttondiv = document.createElement("div");
-        buttondiv.className = "buttonDivClass";
+        let buttonDiv = document.createElement("div");
+        buttonDiv.className = "buttonDivClass";
 
         /**
          * Erstellung von einem Button der zum vorherigen Frame springt.
@@ -100,8 +100,8 @@ H5P.Sozi = (function ($) {
         /**
          * Das Anhängen von den Buttons zu der ButtonDiv.
          */
-        buttondiv.append(backbtn);
-        buttondiv.append(nextbtn);
+        buttonDiv.append(backbtn);
+        buttonDiv.append(nextbtn);
 
         /**
          * Erstellung von einem FrameDiv um die aktuelle Frame Nummer anzuzegien.
@@ -269,7 +269,7 @@ H5P.Sozi = (function ($) {
          * Anhängen der jewweilien Divs an den Container.
          */
         $container.append(div);
-        $container.append(buttondiv);
+        $container.append(buttonDiv);
         $container.append(frameDiv);
     };
 
