@@ -14,24 +14,6 @@ H5P.Sozi = (function ($) {
     };
 
     /**
-
-
-     fetch(json_path)
-     .then(res => res.json())
-     .then(data => {
-                json_data= data;
-            })
-
-     /**
-     fetch(svg_path)
-     .then(res => res.text())
-     .then(text => {
-                div.innerHTML = text;
-            })
-
-     */
-
-    /**
      * Atach Funktion welche von dem H5P Framework aufgerufen wird um die H5P-Inhalte in die Seite zu laden.
      *
      * @param {jQuery} $container
