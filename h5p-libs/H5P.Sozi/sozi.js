@@ -63,8 +63,8 @@ H5P.Sozi = (function ($) {
          * Erstellung von einem Button der zum vorherigen Frame springt.
          */
         let backbtn = document.createElement("button");
-        backbtn.className = "buttonClass";
         backbtn.innerHTML= "Previous Frame";
+        backbtn.className = "buttonClass";
         backbtn.addEventListener("click", function() {
             prevFrame();
         });
@@ -152,6 +152,22 @@ H5P.Sozi = (function ($) {
             if(hashFrameID != null) {
                 let frameFound= false;
                 frameNr= 0;
+
+                while (frameNr < json_data.frames.length && frameFound==false) {
+                    const frame = json_data.frames[frameNr];
+
+                    if (frame.frameId == hashFrameID) {
+                        getData(frame);
+                        frameFound = true;
+                    }
+
+                    if (!frameFound) {
+                        frameNr++;
+                    }
+
+                }
+
+                /**
                 json_data.frames.forEach((frame) => {
                     if(frame.frameId == hashFrameID) {
                         getData(frame);
@@ -161,6 +177,8 @@ H5P.Sozi = (function ($) {
                         frameNr++;
                     }
                 })
+                 */
+
                 hashFrameID=null;
                 frameDiv.innerHTML=framePosition();
             }else{
@@ -211,9 +229,6 @@ H5P.Sozi = (function ($) {
             if(opacity == 0) {
                 layer.style.display= "none";
             }
-
-
-
         }
         /**
          * Dieses Methode wird aufgerufen um den aktuellen Frame anzuzeigen.
